@@ -22,10 +22,19 @@
     padding: 0;
 }
 
-.todo-item button{
+.todo-item .buttons{
     position: absolute;
     top: 0;
     right: 0;
+    height: 100%;
+}
+
+.todo-item .buttons button{
     border-radius: 0;
+    height: 100%;
+}
+
+.todo-item .buttons span{
+    margin-right: 10px;
     height: 100%;
 }

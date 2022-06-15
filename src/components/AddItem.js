@@ -2,14 +2,19 @@ import React, { useState } from 'react'
 
 export const AddItem = ({setData}) => {
 
-    const [value, setValue] = useState('');
-    const [color, setColor] = useState('#eeeeee');
+    const defaultState = {
+        desc: '',
+        color: '#eeeeee',
+        done: false
+    }
+
+    const [{desc,color}, setState] = useState(defaultState);
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if(value.length > 3){
+        if(desc.length > 3){
             const newItem = {
-                description: value,
+                description: desc,
                 datetime: new Date().toLocaleString(),
                 color:color
             }
@@ -18,16 +23,22 @@ export const AddItem = ({setData}) => {
                 localStorage.setItem('data',JSON.stringify(newData));
                 return newData;
             })
-            setValue('');
+            setState({...defaultState,color});
         }
     }
 
     const handleChangeDesc = (e) => {
-        setValue(e.target.value);
+        setState(state => ({
+            ...state,
+            desc: e.target.value
+        }));
     }
     
     const handleChangeColor = (e) => {
-        setColor(e.target.value);
+        setState(state => ({
+            ...state,
+            color: e.target.value
+        }));
     }
 
 
@@ -36,7 +47,7 @@ export const AddItem = ({setData}) => {
         <form onSubmit={handleSubmit}>
             <div className='row mt-2 mb-2'>
                 <div className='col-10'>
-                    <input type="text" className='form-control' placeholder='New Item' value={value} onChange={handleChangeDesc}></input>
+                    <input type="text" className='form-control' placeholder='New Item' value={desc} onChange={handleChangeDesc}></input>
                 </div>
                 <div className='col-2'>
                     <input type="color" className='form-control h-100' value={color} onChange={handleChangeColor}></input>
