@@ -1,64 +1,105 @@
 import React, { useState } from 'react'
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
+import { getColors } from '../helpers/getColors';
+import { setNewColor } from '../helpers/setNewColor';
+import { ColorPicker } from './ColorPicker';
+import { UsedColors } from './UsedColors';
 
-export const AddItem = ({setData}) => {
+export const AddItem = ({setItems}) => {
 
     const defaultState = {
+        title: '',
         desc: '',
-        color: '#eeeeee',
-        done: false
+        color: '#333333',
+        isModalOpen: false
     }
 
-    const [{desc,color}, setState] = useState(defaultState);
+    const [{title,desc,color,isModalOpen}, setState] = useState(defaultState);
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if(desc.length > 3){
+        if(title.length > 1){
             const newItem = {
-                description: desc,
+                title: title,
+                desc: desc,
                 datetime: new Date().toLocaleString(),
-                color:color
+                color: color
             }
-            setData((data) => {
-                const newData = [newItem,...data];
-                localStorage.setItem('data',JSON.stringify(newData));
-                return newData;
-            })
-            setState({...defaultState,color});
+            setNewColor(color);
+            setItems((items) => [newItem,...items])
+            setState({...defaultState});
+            
         }
     }
 
-    const handleChangeDesc = (e) => {
-        setState(state => ({
-            ...state,
-            desc: e.target.value
-        }));
+    const handleCancel = (e) => {
+        setState({...defaultState});
+        handleClose();
     }
+
+    const handleChangeTitle = (e) => setState(state => ({
+        ...state,
+        title: e.target.value
+    }));
+
+    const handleChangeDesc = (e) => setState(state => ({
+        ...state,
+        desc: e.target.value
+    }));
     
-    const handleChangeColor = (e) => {
-        setState(state => ({
-            ...state,
-            color: e.target.value
-        }));
-    }
+    const handleChangeColor = (e) => setState(state => ({
+        ...state,
+        color: e.target.value
+    }));
+
+    const handleClose = () => setState(state=>({
+        ...state,
+        isModalOpen: false
+    }));
+
+    const handleShow = () => setState(state=>({
+        ...state,
+        isModalOpen: true
+    }));
 
 
   return (
     <div>
-        <form onSubmit={handleSubmit}>
-            <div className='row mt-2 mb-2'>
-                <div className='col-10'>
-                    <input type="text" className='form-control' placeholder='New Item' value={desc} onChange={handleChangeDesc}></input>
-                </div>
-                <div className='col-2'>
-                    <input type="color" className='form-control h-100' value={color} onChange={handleChangeColor}></input>
-                </div>
+        <div className='row mb-2 mt-2'>
+            <div className='col-12'>
+                <Button className='btn btn-success d-block p-4 m-0 w-100' onClick={handleShow}>New</Button>
             </div>
-            <div className='row mb-2'>
-                <div className='col-12'>
-                    <button type="submit" className='btn btn-success d-block p-4 m-0 w-100'>Add</button>
+        </div>
+
+        <Modal show={isModalOpen} onHide={handleClose}>
+            <Modal.Header closeButton>
+            <Modal.Title>New Item</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                <div className='row mt-2 mb-2'>
+                    <div className='col-12'>
+                        <label htmlFor="input-title" className="form-label">Title</label>
+                        <input type="text" className='form-control' id='input-title' value={title} onChange={handleChangeTitle}></input>
+                    </div>
+                    <div className='col-12 mt-3'>
+                        <label htmlFor="input-desc" className="form-label">Description</label>
+                        <textarea className='form-control' id='input-desc' value={desc} onChange={handleChangeDesc}></textarea>
+                    </div>
+                    <div className='col-12 mt-3'>
+                        <ColorPicker setColor={handleChangeColor} color={color}></ColorPicker>
+                    </div>
                 </div>
-            </div>
-        </form>
+            </Modal.Body>
+            <Modal.Footer>
+                <Button variant="secondary" onClick={handleCancel}>
+                    Cancel
+                </Button>
+                <Button variant="success" onClick={handleSubmit}>
+                    Add
+                </Button>
+            </Modal.Footer>
+        </Modal>
     </div>
   )
 }

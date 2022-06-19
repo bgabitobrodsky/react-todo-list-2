@@ -1,28 +1,26 @@
 import React, { useEffect, useState } from 'react'
 import { AddItem } from './components/AddItem';
 import { ToDoList } from './components/ToDoList';
+import { getItems } from './helpers/getItems';
 
 export const ReactToDoApp = () => {
 
-    const [data, setData] = useState([]);
+    const [items, setItems] = useState(getItems());
 
     useEffect(()=>{
-        const localStorageData = JSON.parse(localStorage.getItem('data'));
-        localStorageData && setData(localStorageData);
-    }, [setData]);
-
-
+        localStorage.setItem('items',JSON.stringify(items));
+    }, [items]);
 
     return (
         <div className='container'>
             <div className='row'>
                 <div className='col-12'>
-                    <AddItem setData={setData}></AddItem>
+                    <AddItem setItems={setItems}></AddItem>
                 </div>
             </div>
             <div className='row'>
                 <div className='col-12'>
-                    <ToDoList setData={setData} data={data}></ToDoList>
+                    <ToDoList setItems={setItems} items={items}></ToDoList>
                 </div>
             </div>
         </div>

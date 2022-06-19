@@ -1,10 +1,10 @@
 import React from 'react'
 import { ToDoItem } from './ToDoItem'
 
-export const ToDoList = ({data, setData}) => {
+export const ToDoList = ({items, setItems}) => {
   return (
     <div className='todo-grid'>
-        {data?.map((item)=> <ToDoItem key={item.datetime} data={item} setData={setData}></ToDoItem>)}
+        {items?.map((item)=> <ToDoItem key={item.datetime} item={item} setItems={setItems}></ToDoItem>)}
     </div>
   )
 }

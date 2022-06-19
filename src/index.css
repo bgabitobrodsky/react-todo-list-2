@@ -1,14 +1,20 @@
 .todo-item{
+    border: 1px solid #aaa;
+    border-left: 10px solid #111;
     border-radius: 5px;
+    box-shadow: 0 0 5px #999;
+    display: flex;
+    align-items: stretch;
     margin-bottom: 10px;
-    position: relative;
     overflow: hidden;
 }
 
 .todo-item-desc{
     color: #333;
     display: inline-block;
-    padding: 5px 20px;
+    padding: 5px 20px 5px 10px;
+    position: relative;
+    width: 100%;
 }
 
 .todo-item-desc h3{
@@ -16,17 +22,22 @@
     padding: 0;
 }
 
-.todo-item-desc p{
+.todo-item-desc .item-datetime{
     font-size: .8rem;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.todo-item-desc .item-desc{
+    font-size: 1rem;
     margin: 0;
-    padding: 0;
+    margin-left: 10px;
 }
 
 .todo-item .buttons{
-    position: absolute;
-    top: 0;
-    right: 0;
-    height: 100%;
+    display: flex;
+    align-items: center;
 }
 
 .todo-item .buttons button{

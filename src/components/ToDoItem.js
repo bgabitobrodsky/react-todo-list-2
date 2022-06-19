@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-export const ToDoItem = ({data:{description:desc,datetime,color,done}, setData}) => {
+export const ToDoItem = ({item:{title,desc,datetime,color,done}, setItems}) => {
     
     const [className, setClassName] = useState(()=>{
         if(new Date().toLocaleString() === datetime){
@@ -13,30 +13,27 @@ export const ToDoItem = ({data:{description:desc,datetime,color,done}, setData})
     const handleRemove = (e) => {
         setClassName('todo-item animate__animated animate__backOutRight')
         setTimeout(()=>{
-            setData((data) => {
-                const newData = data.filter(item => item.datetime !== datetime);
-                localStorage.setItem('data',JSON.stringify(newData));
-                return newData;
-            })
+            setItems((items) => items.filter(item => item.datetime !== datetime))
         },360)
     }
 
     const handleDone = (e) => {
-        setData((data) => {
-            const index = data.findIndex(item => item.datetime === datetime);
-            data[index].done = true;
-            const newData = Array.from(data);
-            localStorage.setItem('data',JSON.stringify(newData));
-            return newData;
+        setItems((items) => {
+            const index = items.findIndex(item => item.datetime === datetime);
+            items[index].done = true;
+            return Array.from(items);
         })
         setClassName('todo-item animate__animated animate__tada')
     }
     
     return (
-        <div className={className} style={{backgroundColor: color}}>
+        <div className={className} style={{borderLeftColor: color}}>
             <div className='todo-item-desc'>
-                <h3>{desc}</h3>
-                <p>{datetime}</p>
+                <h3>{title}</h3>
+                <p className='item-datetime'>{datetime}</p>
+                {
+                    desc && desc.length > 0 && <p className='item-desc'>{desc}</p>
+                }
             </div>
             <div className='buttons'>
                 {
