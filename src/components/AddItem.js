@@ -1,10 +1,9 @@
 import React, { useState } from 'react'
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import { getColors } from '../helpers/getColors';
 import { setNewColor } from '../helpers/setNewColor';
 import { ColorPicker } from './ColorPicker';
-import { UsedColors } from './UsedColors';
+import { v4 as uuidv4 } from 'uuid';
 
 export const AddItem = ({setItems}) => {
 
@@ -19,8 +18,9 @@ export const AddItem = ({setItems}) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if(title.length > 1){
+        if(title.length > 0){
             const newItem = {
+                id: uuidv4(),
                 title: title,
                 desc: desc,
                 datetime: new Date().toLocaleString(),
@@ -66,40 +66,41 @@ export const AddItem = ({setItems}) => {
 
   return (
     <div>
-        <div className='row mb-2 mt-2'>
+        <div className='row mb-4 mt-2'>
             <div className='col-12'>
-                <Button className='btn btn-success d-block p-4 m-0 w-100' onClick={handleShow}>New</Button>
+                <Button className='btn btn-success d-block p-4 m-0 w-100 add-button' onClick={handleShow}>New</Button>
             </div>
         </div>
-
-        <Modal show={isModalOpen} onHide={handleClose}>
-            <Modal.Header closeButton>
-            <Modal.Title>New Item</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-                <div className='row mt-2 mb-2'>
-                    <div className='col-12'>
-                        <label htmlFor="input-title" className="form-label">Title</label>
-                        <input type="text" className='form-control' id='input-title' value={title} onChange={handleChangeTitle}></input>
-                    </div>
-                    <div className='col-12 mt-3'>
-                        <label htmlFor="input-desc" className="form-label">Description</label>
-                        <textarea className='form-control' id='input-desc' value={desc} onChange={handleChangeDesc}></textarea>
-                    </div>
-                    <div className='col-12 mt-3'>
-                        <ColorPicker setColor={handleChangeColor} color={color}></ColorPicker>
-                    </div>
-                </div>
-            </Modal.Body>
-            <Modal.Footer>
-                <Button variant="secondary" onClick={handleCancel}>
-                    Cancel
-                </Button>
-                <Button variant="success" onClick={handleSubmit}>
-                    Add
-                </Button>
-            </Modal.Footer>
-        </Modal>
+            <Modal show={isModalOpen} onHide={handleClose}>
+                <Modal.Header closeButton>
+                <Modal.Title>New Item</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <form onSubmit={handleSubmit}>
+                        <div className='row mt-2 mb-2'>
+                            <div className='col-12'>
+                                <label htmlFor="input-title" className="form-label">Title</label>
+                                <input type="text" className='form-control' id='input-title' value={title} onChange={handleChangeTitle} required></input>
+                            </div>
+                            <div className='col-12 mt-3'>
+                                <label htmlFor="input-desc" className="form-label">Description</label>
+                                <input className='form-control' id='input-desc' value={desc} onChange={handleChangeDesc}></input>
+                            </div>
+                            <div className='col-12 mt-3'>
+                                <ColorPicker setColor={handleChangeColor} color={color}></ColorPicker>
+                            </div>
+                        </div>
+                    </form>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleCancel}>
+                        Cancel
+                    </Button>
+                    <Button variant="success" onClick={handleSubmit}>
+                        Add
+                    </Button>
+                </Modal.Footer>
+            </Modal>
     </div>
   )
 }

@@ -1,11 +1,24 @@
+body{
+    background: #ededed;
+    color: rgba(0,0,0,.8)
+}
+.input-color{
+    height: 45px;
+    width: 58px;
+}
+
+.add-button{
+    box-shadow: 0 8px 16px 0 rgb(0 0 0 / 10%);
+}
+
 .todo-item{
-    border: 1px solid #aaa;
+    background-color: #fff;
     border-left: 10px solid #111;
-    border-radius: 5px;
-    box-shadow: 0 0 5px #999;
+    border-radius: 6px;
+    box-shadow: 0 8px 16px 0 rgb(0 0 0 / 10%);
     display: flex;
     align-items: stretch;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
     overflow: hidden;
 }
 
@@ -27,6 +40,7 @@
     position: absolute;
     top: 10px;
     right: 10px;
+    color: #777
 }
 
 .todo-item-desc .item-desc{
@@ -43,9 +57,13 @@
 .todo-item .buttons button{
     border-radius: 0;
     height: 100%;
+    width: 40px;
 }
 
 .todo-item .buttons span{
-    margin-right: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     height: 100%;
+    width: 40px;
 }
