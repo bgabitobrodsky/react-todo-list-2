@@ -4,17 +4,19 @@ import Modal from 'react-bootstrap/Modal';
 import { setNewColor } from '../helpers/setNewColor';
 import { ColorPicker } from './ColorPicker';
 import { v4 as uuidv4 } from 'uuid';
+import { useModal } from '../hooks/useModal';
 
 export const AddItem = ({setItems}) => {
 
     const defaultState = {
         title: '',
         desc: '',
-        color: '#333333',
-        isModalOpen: false
+        color: '#333333'
     }
 
-    const [{title,desc,color,isModalOpen}, setState] = useState(defaultState);
+    const [{title,desc,color}, setState] = useState(defaultState);
+
+    const {isModalOpen, openModal, closeModal} = useModal();
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -28,28 +30,19 @@ export const AddItem = ({setItems}) => {
             }
             setNewColor(color);
             setItems((items) => [newItem,...items])
-            setState({...defaultState});  
+            setState({...defaultState});
+            closeModal();
         }
     }
 
     const handleCancel = (e) => {
         setState({...defaultState});
-        handleClose();
+        closeModal();
     }
 
     const handleInputChange = (e) => setState(state => ({
         ...state,
         [e.target.name]: e.target.value
-    }));
-
-    const handleClose = () => setState(state=>({
-        ...state,
-        isModalOpen: false
-    }));
-
-    const handleShow = () => setState(state=>({
-        ...state,
-        isModalOpen: true
     }));
 
     const handleKeyPress = (e) => {
@@ -58,15 +51,14 @@ export const AddItem = ({setItems}) => {
         }
     }
 
-
-  return (
-    <div>
-        <div className='row mb-4 mt-2'>
-            <div className='col-12'>
-                <Button className='btn btn-success d-block p-4 m-0 w-100 add-button' onClick={handleShow}>New</Button>
+    return (
+        <div>
+            <div className='row mb-4 mt-2'>
+                <div className='col-12'>
+                    <Button className='btn btn-success d-block p-4 m-0 w-100 add-button' onClick={openModal}>New</Button>
+                </div>
             </div>
-        </div>
-            <Modal show={isModalOpen} onHide={handleClose}>
+            <Modal show={isModalOpen} onHide={closeModal}>
                 <Modal.Header closeButton>
                 <Modal.Title>New Item</Modal.Title>
                 </Modal.Header>
@@ -94,6 +86,6 @@ export const AddItem = ({setItems}) => {
                     </Button>
                 </Modal.Footer>
             </Modal>
-    </div>
-  )
+        </div>
+    )
 }
