@@ -28,8 +28,7 @@ export const AddItem = ({setItems}) => {
             }
             setNewColor(color);
             setItems((items) => [newItem,...items])
-            setState({...defaultState});
-            
+            setState({...defaultState});  
         }
     }
 
@@ -38,19 +37,9 @@ export const AddItem = ({setItems}) => {
         handleClose();
     }
 
-    const handleChangeTitle = (e) => setState(state => ({
+    const handleInputChange = (e) => setState(state => ({
         ...state,
-        title: e.target.value
-    }));
-
-    const handleChangeDesc = (e) => setState(state => ({
-        ...state,
-        desc: e.target.value
-    }));
-    
-    const handleChangeColor = (e) => setState(state => ({
-        ...state,
-        color: e.target.value
+        [e.target.name]: e.target.value
     }));
 
     const handleClose = () => setState(state=>({
@@ -62,6 +51,12 @@ export const AddItem = ({setItems}) => {
         ...state,
         isModalOpen: true
     }));
+
+    const handleKeyPress = (e) => {
+        if(e.key === 'Enter'){
+            handleSubmit(e);
+        }
+    }
 
 
   return (
@@ -76,21 +71,19 @@ export const AddItem = ({setItems}) => {
                 <Modal.Title>New Item</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <form onSubmit={handleSubmit}>
-                        <div className='row mt-2 mb-2'>
-                            <div className='col-12'>
-                                <label htmlFor="input-title" className="form-label">Title</label>
-                                <input type="text" className='form-control' id='input-title' value={title} onChange={handleChangeTitle} required></input>
-                            </div>
-                            <div className='col-12 mt-3'>
-                                <label htmlFor="input-desc" className="form-label">Description</label>
-                                <input className='form-control' id='input-desc' value={desc} onChange={handleChangeDesc}></input>
-                            </div>
-                            <div className='col-12 mt-3'>
-                                <ColorPicker setColor={handleChangeColor} color={color}></ColorPicker>
-                            </div>
+                    <div className='row mt-2 mb-2' onKeyPress={handleKeyPress}>
+                        <div className='col-12'>
+                            <label htmlFor="input-title" className="form-label">Title:</label>
+                            <input type="text" className='form-control' id='input-title' name='title' value={title} onChange={handleInputChange} required></input>
                         </div>
-                    </form>
+                        <div className='col-12 mt-3'>
+                            <label htmlFor="input-desc" className="form-label">Description:</label>
+                            <input className='form-control' name='desc' id='input-desc' value={desc} onChange={handleInputChange}></input>
+                        </div>
+                        <div className='col-12 mt-3'>
+                            <ColorPicker setColor={handleInputChange} color={color}></ColorPicker>
+                        </div>
+                    </div>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleCancel}>

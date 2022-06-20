@@ -17,5 +17,9 @@ export const setNewColor = (newColor) => {
         }
 
         localStorage.setItem('colors',JSON.stringify(newData));
+    }else{
+        let newData = colors.filter(color => newColor !== color);
+        newData.unshift(newColor);
+        localStorage.setItem('colors',JSON.stringify(newData));
     }
 }
