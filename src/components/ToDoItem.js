@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTimes, faCheck } from '@fortawesome/free-solid-svg-icons'
 
-export const ToDoItem = ({item:{title,desc,datetime,color,done,id}, setItems}) => {
+export const ToDoItem = ({item:{title,desc,datetime,color,done,id}, onDeleteItem, onDone}) => {
     
     const [className, setClassName] = useState(()=>{
         if(new Date().toLocaleString() === datetime){
@@ -15,16 +15,12 @@ export const ToDoItem = ({item:{title,desc,datetime,color,done,id}, setItems}) =
     const handleRemove = (e) => {
         setClassName('todo-item animate__animated animate__backOutRight')
         setTimeout(()=>{
-            setItems((items) => items.filter(item => item.id !== id))
+            onDeleteItem(id);
         },360)
     }
 
     const handleDone = (e) => {
-        setItems((items) => {
-            const index = items.findIndex(item => item.id === id);
-            items[index].done = true;
-            return Array.from(items);
-        })
+        onDone(id);
         setClassName('todo-item animate__animated animate__tada')
     }
     

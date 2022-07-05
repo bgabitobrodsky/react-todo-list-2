@@ -3,7 +3,7 @@ import { getColors } from '../helpers/getColors'
 
 export const ColorPicker = ({color, setColor}) => {
 
-    const colors = getColors();
+    const colors = getColors();  
 
     return (
         <>

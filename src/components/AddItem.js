@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { setNewColor } from '../helpers/setNewColor';
@@ -6,7 +6,9 @@ import { ColorPicker } from './ColorPicker';
 import { v4 as uuidv4 } from 'uuid';
 import { useModal } from '../hooks/useModal';
 
-export const AddItem = ({setItems}) => {
+export const AddItem = ({onNewItem}) => {
+
+    const titleInput = useRef(null);
 
     const defaultState = {
         title: '',
@@ -29,9 +31,10 @@ export const AddItem = ({setItems}) => {
                 color: color
             }
             setNewColor(color);
-            setItems((items) => [newItem,...items])
             setState({...defaultState});
             closeModal();
+
+            onNewItem(newItem);
         }
     }
 
@@ -58,7 +61,7 @@ export const AddItem = ({setItems}) => {
                     <Button className='btn btn-success d-block p-4 m-0 w-100 add-button' onClick={openModal}>New</Button>
                 </div>
             </div>
-            <Modal show={isModalOpen} onHide={closeModal}>
+            <Modal show={isModalOpen} onHide={closeModal} onShow={ () => { titleInput.current.focus();}}>
                 <Modal.Header closeButton>
                 <Modal.Title>New Item</Modal.Title>
                 </Modal.Header>
@@ -66,7 +69,7 @@ export const AddItem = ({setItems}) => {
                     <div className='row mt-2 mb-2' onKeyPress={handleKeyPress}>
                         <div className='col-12'>
                             <label htmlFor="input-title" className="form-label">Title:</label>
-                            <input type="text" className='form-control' id='input-title' name='title' value={title} onChange={handleInputChange} required></input>
+                            <input ref={titleInput} type="text" className='form-control' id='input-title' name='title' value={title} onChange={handleInputChange} required></input>
                         </div>
                         <div className='col-12 mt-3'>
                             <label htmlFor="input-desc" className="form-label">Description:</label>
